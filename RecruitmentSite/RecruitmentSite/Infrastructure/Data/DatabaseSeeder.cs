@@ -35,7 +35,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Interrapidisimo",
                             Job = "Desarrollador Junior",
                             Description = "Desarrollo de aplicaciones web",
-                            Salary = 2800000M,
+                            Salary = 2800000,
                             BeginDate = new DateTime(2015, 1, 1),
                             EndDate = new DateTime(2017, 6, 30),
                             InsertDate = DateTime.UtcNow
@@ -45,7 +45,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Axa",
                             Job = "Desarrollador Senior",
                             Description = "Desarrollo de aplicaciones web",
-                            Salary = 4800000M,
+                            Salary = 4800000,
                             BeginDate = new DateTime(2017, 7, 1),
                             EndDate = new DateTime(2021, 12, 31),
                             InsertDate = DateTime.UtcNow
@@ -55,7 +55,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Redarbor",
                             Job = "Lider tecnico",
                             Description = "Liderazgo de equipo",
-                            Salary = 7800000M,
+                            Salary = 7800000,
                             BeginDate = new DateTime(2022, 1, 1),
                             EndDate = null, // Trabajo actual
                             InsertDate = DateTime.UtcNow
@@ -75,7 +75,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Consultora ABC",
                             Job = "Analista de Sistemas Junior",
                             Description = "Análisis y diseño",
-                            Salary = 2800000M,
+                            Salary = 2800000,
                             BeginDate = new DateTime(2018, 3, 1),
                             EndDate = new DateTime(2019, 12, 31),
                             InsertDate = DateTime.UtcNow
@@ -85,7 +85,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Globant",
                             Job = "Analista de Sistemas Senior",
                             Description = "Diseño y arquitectura",
-                            Salary = 4800000M,
+                            Salary = 4800000,
                             BeginDate = new DateTime(2020, 1, 1),
                             EndDate = null, // Trabajo actual
                             InsertDate = DateTime.UtcNow
@@ -105,7 +105,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "IT Qualis",
                             Job = "Desarrollador Full Stack",
                             Description = "Desarrollo full stack",
-                            Salary = 4800000M,
+                            Salary = 4800000,
                             BeginDate = new DateTime(2015, 6, 1),
                             EndDate = new DateTime(2018, 12, 31),
                             InsertDate = DateTime.UtcNow
@@ -115,7 +115,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Tech Inc",
                             Job = "Arquitecto de Software",
                             Description = "Diseño de arquitectura",
-                            Salary = 7800000M,
+                            Salary = 7800000,
                             BeginDate = new DateTime(2019, 1, 1),
                             EndDate = new DateTime(2022, 6, 30),
                             InsertDate = DateTime.UtcNow
@@ -125,7 +125,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Claro SA",
                             Job = "Lider de arquitectura",
                             Description = "Liderazgo de arquitectura",
-                            Salary = 9800000M,
+                            Salary = 9800000,
                             BeginDate = new DateTime(2022, 7, 1),
                             EndDate = null, // Trabajo actual
                             InsertDate = DateTime.UtcNow
@@ -145,7 +145,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Data SAS",
                             Job = "Analista de datos",
                             Description = "Análisis de datos",
-                            Salary = 1800000M,
+                            Salary = 1800000,
                             BeginDate = new DateTime(2017, 1, 1),
                             EndDate = new DateTime(2019, 12, 31),
                             InsertDate = DateTime.UtcNow
@@ -155,7 +155,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Big Solutions",
                             Job = "Ingeniero de datos",
                             Description = "Desarrollo de datos",
-                            Salary = 5800000M,
+                            Salary = 5800000,
                             BeginDate = new DateTime(2020, 1, 1),
                             EndDate = null, // Trabajo actual
                             InsertDate = DateTime.UtcNow
@@ -175,7 +175,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Android",
                             Job = "Desarrollador Movil",
                             Description = "Desarrollo de aplicaciones móviles",
-                            Salary = 3800000M,
+                            Salary = 3800000,
                             BeginDate = new DateTime(2016, 3, 1),
                             EndDate = new DateTime(2018, 8, 31),
                             InsertDate = DateTime.UtcNow
@@ -185,7 +185,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Huawei",
                             Job = "Desarrollador Movil senior",
                             Description = "Desarrollo de aplicaciones móviles",
-                            Salary = 5800000M,
+                            Salary = 5800000,
                             BeginDate = new DateTime(2018, 9, 1),
                             EndDate = new DateTime(2021, 12, 31),
                             InsertDate = DateTime.UtcNow
@@ -195,7 +195,7 @@ namespace RecruitmentSite.Infrastructure.Data
                             Company = "Apple",
                             Job = "Lider de desarrollo movil",
                             Description = "Liderazgo de equipo de desarrollo móvil",
-                            Salary = 7800000M,
+                            Salary = 7800000,
                             BeginDate = new DateTime(2022, 1, 1),
                             EndDate = null, // Trabajo actual
                             InsertDate = DateTime.UtcNow
@@ -208,4 +208,4 @@ namespace RecruitmentSite.Infrastructure.Data
             context.SaveChanges();
         }
     }
-} 
+}

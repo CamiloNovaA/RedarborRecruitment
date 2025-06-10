@@ -28,6 +28,15 @@ namespace RecruitmentSite.Application.Candidates.Commands
                 throw new Exception($"Candidato con el id {request.IdCandidate} no se encuentra.");
             }
 
+            // Verificar si el nuevo email ya está en uso por otro candidato
+            var existingCandidate = await _context.Candidates
+                .FirstOrDefaultAsync(c => c.Email == request.Email && c.IdCandidate != request.IdCandidate, cancellationToken);
+
+            if (existingCandidate != null)
+            {
+                throw new InvalidOperationException($"Ya existe otro candidato registrado con el correo electrónico {request.Email}");
+            }
+
             candidate.Name = request.Name;
             candidate.Surname = request.Surname;
             candidate.Birthdate = request.Birthdate;
@@ -40,7 +49,7 @@ namespace RecruitmentSite.Application.Candidates.Commands
                 .Select(e => e.IdCandidateExperience.Value)
                 .ToList();
 
-            // Elimina experiencias que ya no est�n en la solicitud
+            // Elimina experiencias que ya no están en la solicitud
             var experiencesToRemove = candidate.Experiences
                 .Where(e => !updatedExperienceIds.Contains(e.IdCandidateExperience))
                 .ToList();
@@ -88,7 +97,15 @@ namespace RecruitmentSite.Application.Candidates.Commands
                 }
             }
 
-            await _context.SaveChangesAsync(cancellationToken);
+            try
+            {
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("IX_Candidates_Email") ?? false)
+            {
+                throw new InvalidOperationException($"Ya existe otro candidato registrado con el correo electrónico {request.Email}");
+            }
+
             return Unit.Value;
         }
     }

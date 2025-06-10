@@ -30,7 +30,7 @@ namespace RecruitmentSite.Infrastructure.Data
                 entity.Property(e => e.Company).HasMaxLength(100).IsRequired();
                 entity.Property(e => e.Job).HasMaxLength(100).IsRequired();
                 entity.Property(e => e.Description).HasMaxLength(4000);
-                entity.Property(e => e.Salary).HasPrecision(8, 2);
+                entity.Property(e => e.Salary).HasColumnType("bigint");
 
                 entity.HasOne(e => e.Candidate)
                     .WithMany(c => c.Experiences)
@@ -39,4 +39,4 @@ namespace RecruitmentSite.Infrastructure.Data
             });
         }
     }
-} 
+}

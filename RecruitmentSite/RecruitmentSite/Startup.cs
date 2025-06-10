@@ -15,14 +15,13 @@ namespace RecruitmentSite
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Configuración de la base de datos en memoria para pruebas
+            // ConfiguraciÃ³n de la base de datos SQL Server
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("RecruitmentDb"));
+                options.UseSqlServer(Configuration.GetConnectionString("RecruitmentConnection")));
 
-            // Configuración de MediatR para manejar consultas y comandos
+            // ConfiguraciÃ³n de MediatR para manejar consultas y comandos
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
-            // Configuración de AutoMapper para mapeo de DTOs
             services.AddControllersWithViews();
         }
 
@@ -47,11 +46,11 @@ namespace RecruitmentSite
 
             app.UseEndpoints(endpoints =>
             {
-                // Configuración de rutas para los controladores
+                // ConfiguraciÃ³n de rutas para los controladores
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Candidates}/{action=Index}/{id?}");
             });
         }
     }
-} 
+}

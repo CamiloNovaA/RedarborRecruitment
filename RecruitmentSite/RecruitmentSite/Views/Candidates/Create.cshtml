@@ -7,22 +7,23 @@
 <h1>Crear candidato</h1>
 
 <p class="text-md-start">Completa el formulario para crear un candidato.</p>
+
 <form asp-action="Create" id="createForm">
     <div class="form-group">
         <label asp-for="Name" class="control-label">Nombre</label>
-        <input asp-for="Name" class="form-control" required />
+        <input asp-for="Name" maxlength="50" class="form-control" required />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Surname" class="control-label">Apellido</label>
-        <input asp-for="Surname" class="form-control" required />
+        <input asp-for="Surname" maxlength="150" class="form-control" required />
         <span asp-validation-for="Surname" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Email" class="control-label">Correo Electrónico</label>
-        <input asp-for="Email" class="form-control" type="email" required />
+        <input asp-for="Email" maxlength="250" class="form-control" type="email" required />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
@@ -47,19 +48,19 @@
             <div class="experience-item border p-3 mb-3">
                 <div class="form-group">
                     <label>Empresa</label>
-                    <input name="Experiences[0].Company" class="form-control" required />
+                    <input name="Experiences[0].Company" maxlength="100" class="form-control" required />
                 </div>
                 <div class="form-group">
                     <label>Cargo</label>
-                    <input name="Experiences[0].Job" class="form-control" required />
+                    <input name="Experiences[0].Job" maxlength="100" class="form-control" required />
                 </div>
                 <div class="form-group">
                     <label>Descripción del cargo</label>
-                    <textarea name="Experiences[0].Description" class="form-control" required></textarea>
+                    <textarea name="Experiences[0].Description" maxlength="4000" class="form-control" required></textarea>
                 </div>
                 <div class="form-group">
                     <label>Salario</label>
-                    <input name="Experiences[0].Salary" class="form-control" type="number" step="1" required />
+                    <input name="Experiences[0].Salary" maxlength="8" class="form-control" type="number" step="1" required />
                 </div>
                 <div class="form-group">
                     <label>Fecha de inicio</label>

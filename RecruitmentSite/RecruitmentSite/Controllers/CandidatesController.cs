@@ -34,8 +34,15 @@ namespace RecruitmentSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var candidateId = await _mediator.Send(command);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    var candidateId = await _mediator.Send(command);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (InvalidOperationException ex)
+                {
+                    ModelState.AddModelError("Email", ex.Message);
+                }
             }
             return View(command);
         }
@@ -70,8 +77,15 @@ namespace RecruitmentSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _mediator.Send(command);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await _mediator.Send(command);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (InvalidOperationException ex)
+                {
+                    ModelState.AddModelError("Email", ex.Message);
+                }
             }
             return View(command);
         }

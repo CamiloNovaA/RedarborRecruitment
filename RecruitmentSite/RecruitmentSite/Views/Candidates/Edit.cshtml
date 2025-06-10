@@ -12,19 +12,19 @@
     
     <div class="form-group">
         <label asp-for="Name" class="control-label">Nombre</label>
-        <input asp-for="Name" class="form-control" required />
+        <input asp-for="Name" maxlength="50" class="form-control" required />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Surname" class="control-label">Apellido</label>
-        <input asp-for="Surname" class="form-control" required />
+        <input asp-for="Surname" maxlength="150" class="form-control" required />
         <span asp-validation-for="Surname" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Email" class="control-label">Correo Electrónico</label>
-        <input asp-for="Email" class="form-control" type="email" required />
+        <input asp-for="Email" maxlength="250" class="form-control" type="email" required />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
@@ -53,15 +53,15 @@
                     
                     <div class="form-group">
                         <label>Empresa</label>
-                        <input name="Experiences[@i].Company" value="@Model.Experiences[i].Company" class="form-control" required />
+                        <input name="Experiences[@i].Company" value="@Model.Experiences[i].Company" maxlength="100" class="form-control" required />
                     </div>
                     <div class="form-group">
                         <label>Cargo</label>
-                        <input name="Experiences[@i].Job" value="@Model.Experiences[i].Job" class="form-control" required />
+                        <input name="Experiences[@i].Job" value="@Model.Experiences[i].Job" maxlength="100" class="form-control" required />
                     </div>
                     <div class="form-group">
                         <label>Descripción del cargo</label>
-                        <textarea name="Experiences[@i].Description" class="form-control" required>@Model.Experiences[i].Description</textarea>
+                        <textarea name="Experiences[@i].Description" maxlength="4000" class="form-control" required>@Model.Experiences[i].Description</textarea>
                     </div>
                     <div class="form-group">
                         <label>Salario</label>
@@ -110,15 +110,15 @@
         
         <div class="form-group">
             <label>Empresa</label>
-            <input name="Experiences[INDEX].Company" class="form-control" required />
+            <input name="Experiences[INDEX].Company" maxlength="100" class="form-control" required />
         </div>
         <div class="form-group">
             <label>Cargo</label>
-            <input name="Experiences[INDEX].Job" class="form-control" required />
+            <input name="Experiences[INDEX].Job" maxlength="100" class="form-control" required />
         </div>
         <div class="form-group">
             <label>Descripción del cargo</label>
-            <textarea name="Experiences[INDEX].Description" class="form-control" required></textarea>
+            <textarea name="Experiences[INDEX].Description" maxlength="4000" class="form-control" required></textarea>
         </div>
         <div class="form-group">
             <label>Salario</label>

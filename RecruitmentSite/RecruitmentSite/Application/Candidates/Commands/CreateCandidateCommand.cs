@@ -20,7 +20,7 @@ namespace RecruitmentSite.Application.Candidates.Commands
         [Required(ErrorMessage = "La fecha de nacimiento es requerida")]
         [MinimumAge(18, ErrorMessage = "Debes ser mayor de edad (18 años) para registrarte")]
         public DateTime Birthdate { get; set; }
-        
+
         public List<CandidateExperienceDto> Experiences { get; set; }
     }
 
@@ -29,7 +29,7 @@ namespace RecruitmentSite.Application.Candidates.Commands
         public required string Company { get; set; }
         public required string Job { get; set; }
         public required string Description { get; set; }
-        public decimal Salary { get; set; }
+        public int Salary { get; set; }
         public DateTime BeginDate { get; set; }
         public DateTime? EndDate { get; set; }
     }
@@ -71,4 +71,4 @@ namespace RecruitmentSite.Application.Candidates.Commands
             return new ValidationResult(ErrorMessage);
         }
     }
-} 
+}

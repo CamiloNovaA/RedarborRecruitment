@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RecruitmentSite.Domain.Entities;
 using RecruitmentSite.Infrastructure.Data;
 
@@ -18,6 +19,15 @@ namespace RecruitmentSite.Application.Candidates.Commands
 
         public async Task<int> Handle(CreateCandidateCommand request, CancellationToken cancellationToken)
         {
+            // Verificar si ya existe un candidato con el mismo email
+            var existingCandidate = await _context.Candidates
+                .FirstOrDefaultAsync(c => c.Email == request.Email, cancellationToken);
+
+            if (existingCandidate != null)
+            {
+                throw new InvalidOperationException($"Ya existe un candidato registrado con el correo electrónico {request.Email}");
+            }
+
             var candidate = new Candidate
             {
                 Name = request.Name,
@@ -28,7 +38,15 @@ namespace RecruitmentSite.Application.Candidates.Commands
             };
 
             _context.Candidates.Add(candidate);
-            await _context.SaveChangesAsync(cancellationToken);
+            
+            try 
+            {
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("IX_Candidates_Email") ?? false)
+            {
+                throw new InvalidOperationException($"Ya existe un candidato registrado con el correo electrónico {request.Email}");
+            }
 
             if (request.Experiences != null)
             {
