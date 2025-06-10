@@ -65,6 +65,12 @@ Un reclutador necesita administrar una base de candidatos de un proceso selectiv
 - MediatR
 - Bootstrap
 
+# Patrones de Diseño
+- CQRS (Command Query Responsibility Segregation)
+- Mediator Pattern (usando MediatR)
+- Repository Pattern (Separando la capa de datos de la lógica)
+- Clean Architecture
+
 # Instalación y Configuración
 
 1. Clonar el repositorio
