@@ -58,7 +58,14 @@ Un reclutador necesita administrar una base de candidatos de un proceso selectiv
 - Vistas Razor
 - Validaciones de lado del cliente
 
-## Instalación y Configuración
+# Tecnologías Utilizadas
+- ASP.NET Core MVC
+- Entity Framework Core
+- SQL Server
+- MediatR
+- Bootstrap
+
+# Instalación y Configuración
 
 1. Clonar el repositorio
 2. Actualizar la cadena de conexión en `appsettings.json` (Si se requiere)
