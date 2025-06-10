@@ -1,0 +1,46 @@
+@model List<RecruitmentSite.Application.Candidates.Queries.CandidateDto>
+
+@{
+    ViewData["Title"] = "Candidatos";
+
+    // Muestra la edad en base a la fecha de nacimiento
+    int CalculateAge(DateTime birthDate)
+    {
+        return DateTime.Today.Year - birthDate.Year;
+    }
+}
+
+<h1>Candidatos</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Registrar nuevo candidato</a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo</th>
+            <th>Edad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var candidate in Model)
+        {
+            <tr>
+                <td>@candidate.Name</td>
+                <td>@candidate.Surname</td>
+                <td>@candidate.Email</td>
+                <td>@CalculateAge(candidate.Birthdate) años</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@candidate.IdCandidate" class="btn btn-warning">Editar</a>
+                    <form asp-action="Delete" asp-route-id="@candidate.IdCandidate" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Esta seguro que desea eliminar este candidato?');">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table> 

@@ -1,0 +1,372 @@
+@model RecruitmentSite.Application.Candidates.Commands.UpdateCandidateCommand
+
+@{
+    ViewData["Title"] = "Modificar candidato";
+}
+
+<h1>Modificar candidato</h1>
+
+<p class="text-md-start">Completa el formulario para actualizar la información del candidato.</p>
+<form asp-action="Edit" id="editForm">
+    <input type="hidden" asp-for="IdCandidate" />
+    
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Nombre</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Surname" class="control-label">Apellido</label>
+        <input asp-for="Surname" class="form-control" required />
+        <span asp-validation-for="Surname" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email" class="control-label">Correo Electrónico</label>
+        <input asp-for="Email" class="form-control" type="email" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Birthdate" class="control-label">Fecha de Nacimiento</label>
+        <input asp-for="Birthdate" class="form-control" type="date" required id="birthdate" />
+        <span asp-validation-for="Birthdate" class="text-danger"></span>
+        <div id="ageError" class="text-danger" style="display: none;">
+            Debes ser mayor de edad (18 años) para registrarte
+        </div>
+    </div>
+
+    <br />
+    <div class="form-check mb-3" id="noExperienceContainer" style="display: @(Model.Experiences.Any(e => e.EndDate == null) ? "none" : "block")">
+        <input type="checkbox" class="form-check-input" id="noExperience" @(Model.Experiences.Count == 0 ? "checked" : "") />
+        <label class="form-check-label" for="noExperience">Sin experiencia laboral</label>
+    </div>
+
+    <div id="experienceSection" style="display: @(Model.Experiences.Count == 0 ? "none" : "block")">
+        <h3>Experiencia</h3>
+        <div id="experiences">
+            @for (var i = 0; i < Model.Experiences.Count; i++)
+            {
+                <div class="experience-item border p-3 mb-3">
+                    <input type="hidden" name="Experiences[@i].IdCandidateExperience" value="@Model.Experiences[i].IdCandidateExperience" />
+                    
+                    <div class="form-group">
+                        <label>Empresa</label>
+                        <input name="Experiences[@i].Company" value="@Model.Experiences[i].Company" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Cargo</label>
+                        <input name="Experiences[@i].Job" value="@Model.Experiences[i].Job" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción del cargo</label>
+                        <textarea name="Experiences[@i].Description" class="form-control" required>@Model.Experiences[i].Description</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Salario</label>
+                        <input name="Experiences[@i].Salary" value="@Model.Experiences[i].Salary" class="form-control" type="number" step="1" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de inicio</label>
+                        <input name="Experiences[@i].BeginDate" value="@Model.Experiences[i].BeginDate.ToString("yyyy-MM-dd")" class="form-control begin-date" type="date" required />
+                        <span class="text-danger begin-date-error" style="display: none;">
+                            La fecha de inicio es requerida
+                        </span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input current-job" @(Model.Experiences[i].EndDate == null ? "checked" : "") />
+                            <label class="form-check-label">Trabajo actual</label>
+                        </div>
+                    </div>
+                    <div class="form-group end-date-group" style="display: @(Model.Experiences[i].EndDate == null ? "none" : "block")">
+                        <label>Fecha fin</label>
+                        <input name="Experiences[@i].EndDate" value="@(Model.Experiences[i].EndDate?.ToString("yyyy-MM-dd"))" class="form-control end-date" type="date" />
+                        <span class="text-danger end-date-error" style="display: none;">
+                            La fecha de fin debe ser mayor o igual a la fecha de inicio
+                        </span>
+                    </div>
+                    <button type="button" class="btn btn-danger mt-2" onclick="removeExperience(this)">Eliminar experiencia</button>
+                </div>
+            }
+        </div>
+
+        <button type="button" class="btn btn-secondary" onclick="addExperience()">Agregar experiencia</button>
+    </div>
+    
+    <hr />
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Guardar" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Volver al inicio</a>
+    </div>
+</form>
+
+<!-- Plantilla para nueva experiencia -->
+<div id="experience-template" style="display: none;">
+    <div class="experience-item border p-3 mb-3">
+        <input type="hidden" name="Experiences[INDEX].IdCandidateExperience" value="" />
+        
+        <div class="form-group">
+            <label>Empresa</label>
+            <input name="Experiences[INDEX].Company" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label>Cargo</label>
+            <input name="Experiences[INDEX].Job" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label>Descripción del cargo</label>
+            <textarea name="Experiences[INDEX].Description" class="form-control" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Salario</label>
+            <input name="Experiences[INDEX].Salary" class="form-control" type="number" step="0.01" required />
+        </div>
+        <div class="form-group">
+            <label>Fecha de inicio</label>
+            <input name="Experiences[INDEX].BeginDate" class="form-control begin-date" type="date" required />
+            <span class="text-danger begin-date-error" style="display: none;">
+                La fecha de inicio es requerida
+            </span>
+        </div>
+        <div class="form-group mb-2">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input current-job" />
+                <label class="form-check-label">Trabajo actual</label>
+            </div>
+        </div>
+        <div class="form-group end-date-group">
+            <label>Fecha fin</label>
+            <input name="Experiences[INDEX].EndDate" class="form-control end-date" type="date" />
+            <span class="text-danger end-date-error" style="display: none;">
+                La fecha de fin debe ser mayor o igual a la fecha de inicio
+            </span>
+        </div>
+        <button type="button" class="btn btn-danger mt-2" onclick="removeExperience(this)">Eliminar experiencia</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let experienceCount = @Model.Experiences.Count;
+        // Guardar el template original al cargar la página
+        const originalTemplate = document.getElementById('experience-template').querySelector('.experience-item').cloneNode(true);
+
+        // Función para verificar si hay algún trabajo actual
+        function hasCurrentJob() {
+            const currentJobs = document.querySelectorAll('.current-job:checked');
+            return currentJobs.length > 0;
+        }
+
+        // Función para mostrar u ocultar el checkbox de sin experiencia
+        function toggleNoExperienceCheckbox() {
+            const noExperienceContainer = document.getElementById('noExperienceContainer');
+            const noExperienceCheckbox = document.getElementById('noExperience');
+            
+            if (hasCurrentJob()) {
+                noExperienceContainer.style.display = 'none';
+                noExperienceCheckbox.checked = false;
+                document.getElementById('experienceSection').style.display = 'block';
+            } else {
+                noExperienceContainer.style.display = 'block';
+            }
+        }
+
+        // Manejar el checkbox de sin experiencia
+        document.getElementById('noExperience').addEventListener('change', function() {
+            const experienceSection = document.getElementById('experienceSection');
+            const experienceInputs = experienceSection.querySelectorAll('input, textarea');
+            
+            if (this.checked) {
+                experienceSection.style.display = 'none';
+                // Remover el atributo required de todos los campos de experiencia
+                experienceInputs.forEach(input => {
+                    if (input.hasAttribute('required')) {
+                        input.removeAttribute('required');
+                    }
+                });
+                // Limpiar todos los valores y desmarcar trabajos actuales
+                document.getElementById('experiences').innerHTML = '';
+                experienceCount = 0;
+            } else {
+                experienceSection.style.display = 'block';
+                // Si no hay experiencias, agregar la primera
+                if (experienceCount === 0) {
+                    addExperience();
+                }
+            }
+        });
+
+        // Esta función agrega un nuevo bloque de experiencia al formulario
+        function addExperience() {
+            const template = originalTemplate.cloneNode(true);
+            const inputs = template.querySelectorAll('input, textarea');
+            
+            inputs.forEach(input => {
+                const name = input.getAttribute('name');
+                if (name) {
+                    input.setAttribute('name', name.replace('INDEX', experienceCount));
+                }
+                if (input.type !== 'checkbox') {
+                    input.value = '';
+                } else {
+                    input.checked = false;
+                }
+            });
+
+            // Reactivar la validación
+            template.querySelectorAll('input, textarea').forEach(input => {
+                if (input.classList.contains('end-date') === false && input.type !== 'checkbox') {
+                    input.setAttribute('required', '');
+                }
+            });
+
+            // Agregar los event listeners a las nuevas fechas para validar fecha inicio y fin
+            const beginDate = template.querySelector('.begin-date');
+            const endDate = template.querySelector('.end-date');
+            if (beginDate && endDate) {
+                setupDateValidation(beginDate, endDate);
+            }
+
+            // Configurar el checkbox de trabajo actual
+            const currentJobCheckbox = template.querySelector('.current-job');
+            if (currentJobCheckbox) {
+                setupCurrentJobToggle(currentJobCheckbox);
+                currentJobCheckbox.addEventListener('change', toggleNoExperienceCheckbox);
+            }
+
+            document.getElementById('experiences').appendChild(template);
+            experienceCount++;
+        }
+
+        function setupCurrentJobToggle(checkbox) {
+            const experienceItem = checkbox.closest('.experience-item');
+            const endDateGroup = experienceItem.querySelector('.end-date-group');
+            const endDateInput = experienceItem.querySelector('.end-date');
+
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    endDateGroup.style.display = 'none';
+                    endDateInput.value = '';
+                    // Remover la clase is-invalid y ocultar el mensaje de error
+                    endDateInput.classList.remove('is-invalid');
+                    endDateInput.nextElementSibling.style.display = 'none';
+                } else {
+                    endDateGroup.style.display = 'block';
+                }
+                toggleNoExperienceCheckbox();
+            });
+        }
+
+        // Configurar los checkboxes iniciales y sus event listeners
+        document.querySelectorAll('.current-job').forEach(checkbox => {
+            setupCurrentJobToggle(checkbox);
+            checkbox.addEventListener('change', toggleNoExperienceCheckbox);
+        });
+
+        // Configuración inicial del checkbox de sin experiencia
+        toggleNoExperienceCheckbox();
+
+        // Esta función valida que la fecha de fin sea mayor o igual a la fecha de inicio
+        function setupDateValidation(beginDateInput, endDateInput) {
+            const validateDates = () => {
+                const beginDate = beginDateInput.value;
+                const endDate = endDateInput.value;
+                const errorSpan = endDateInput.nextElementSibling;
+                const currentJobCheckbox = endDateInput.closest('.experience-item').querySelector('.current-job');
+
+                // No validar si es trabajo actual
+                if (currentJobCheckbox && currentJobCheckbox.checked) {
+                    errorSpan.style.display = 'none';
+                    endDateInput.classList.remove('is-invalid');
+                    return true;
+                }
+
+                if (endDate && beginDate) {
+                    const beginDateTime = new Date(beginDate).getTime();
+                    const endDateTime = new Date(endDate).getTime();
+                    
+                    if (endDateTime < beginDateTime) {
+                        errorSpan.style.display = 'block';
+                        endDateInput.classList.add('is-invalid');
+                        return false;
+                    }
+                }
+                
+                errorSpan.style.display = 'none';
+                endDateInput.classList.remove('is-invalid');
+                return true;
+            };
+
+            beginDateInput.addEventListener('change', validateDates);
+            endDateInput.addEventListener('change', validateDates);
+
+            // Validar las fechas iniciales si existen
+            validateDates();
+        }
+
+        // Validar todas las fechas antes de enviar el formulario
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Validar la edad
+            const birthdateInput = document.getElementById('birthdate');
+            const birthdate = new Date(birthdateInput.value);
+            const age = calculateAge(birthdate);
+            const ageError = document.getElementById('ageError');
+
+            if (age < 18) {
+                e.preventDefault();
+                ageError.style.display = 'block';
+                birthdateInput.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                ageError.style.display = 'none';
+                birthdateInput.classList.remove('is-invalid');
+            }
+
+            // Validar todas las fechas de experiencia
+            document.querySelectorAll('.experience-item').forEach(item => {
+                const beginDate = item.querySelector('.begin-date');
+                const endDate = item.querySelector('.end-date');
+                const currentJobCheckbox = item.querySelector('.current-job');
+
+                if (beginDate && endDate && endDate.value && !currentJobCheckbox.checked) {
+                    const beginDateTime = new Date(beginDate.value).getTime();
+                    const endDateTime = new Date(endDate.value).getTime();
+                    
+                    if (endDateTime < beginDateTime) {
+                        e.preventDefault();
+                        endDate.nextElementSibling.style.display = 'block';
+                        endDate.classList.add('is-invalid');
+                        isValid = false;
+                    }
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        // Elimina una experiencia al hacer clic en el botón de eliminar
+        function removeExperience(button) {
+            button.closest('.experience-item').remove();
+        }
+
+        // Calcula la edad en base a la fecha de nacimiento
+        function calculateAge(birthDate) {
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+    </script>
+} 
